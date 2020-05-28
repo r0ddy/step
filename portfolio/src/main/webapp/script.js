@@ -15,14 +15,4 @@
 /**
  * Adds a random greeting to the page.
  */
-function addRandomTVShowQuote() {
-  const quotes =
-      ["I'M PICKLE RICK!", 'Bears Beets Battlestar Galactica.', 'Can I offer you an egg in this trying time?'];
 
-  // Pick a random greeting.
-  const quote = quotes[Math.floor(Math.random() * quotes.length)];
-
-  // Add it to the page.
-  const quoteContainer = document.getElementById('quote-container');
-  quoteContainer.innerText = quote;
-}
