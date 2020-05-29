@@ -47,16 +47,30 @@ nav {
     font-weight: normal;
 }
 
+#profileImage {
+    border: 2px solid black;
+    border-radius: 16px;
+}
+
 .projects {
     display: flex;
     flex-direction: row;
-}
-
-.projectImage {
+    justify-content: space-between;
 }
 
 .project {
     display: flex;
     flex-direction: column;
     align-content: center;
+    max-width: 30%;
+}
+
+.projectImage {
+    align-self: center;
+    border: 2px solid black;
+    border-radius: 8px;
+}
+
+.projectDescription {
+    font-size: 12px;
 }
