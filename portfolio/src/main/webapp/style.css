@@ -32,7 +32,7 @@ nav {
     margin-top: 40px;
     margin-left: auto;
     margin-right: auto;
-    width: 650px;
+    max-width: 70%;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -45,4 +45,18 @@ nav {
 
 .textBlurb > h1 {
     font-weight: normal;
+}
+
+.projects {
+    display: flex;
+    flex-direction: row;
+}
+
+.projectImage {
+}
+
+.project {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
 }
