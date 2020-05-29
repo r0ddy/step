@@ -15,43 +15,18 @@
             <div class="textBlurb">
                 <h1>Projects</h1>
                 <div class="projects">
-                    <div class="project">
-                        <img class="projectImage" src="/images/animalbytes.png"/>                    
-                        <p class="projectDescription">
-                            AnimalBytes is an app that I worked on during
-                            Cornell's Digital Agriculture Hackathon. It's
-                            a mobile app made to hourly check the emotional
-                            status of various farm animals. This helps
-                            farmers detect distress that may be related to
-                            disease, quickly and efficiently.
-                        </p>
-                    </div>
-                    <div class="project">
-                        <img class="projectImage" src="/images/pioneer.png"/>
-                        <p class="projectDescription">
-                            Pioneer is an app that I made for the Program
-                            for Research in Youth Development and Engagement
-                            (PRYDE) at Cornell. I created a survey app for
-                            researchers to anonymously collect diary entries 
-                            from youth. Researchers at PRYDE can then view all
-                            their collected data on a dashboard to view
-                            and export as they wish. 
-                        </p>
-                    </div>
-                    <div class="project">
-                        <img class="projectImage" src="/images/eve.png"/>
-                        <p class="projectDescription">
-                            Eve is an app that I helped make as a part of 
-                            Cornell's Design & Tech Initiative (DTI). At DTI,
-                            we make apps that help Cornellians in their everyday
-                            lives. In particular, Eve is a central repository
-                            for any event at Cornell. We help students filter and
-                            identify events and then notify them of any events
-                            they plan on attending.
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
     </body>
+    <template id="projectTemplate">
+        <div class="project">
+            <img class="projectImage" src="/images/eve.png"/>                    
+            <p class="projectDescription">
+            </p>
+        </div>
+    </template>
+    <script>
+        loadProjects();
+    </script>
 </html>
