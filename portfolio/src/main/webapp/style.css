@@ -41,6 +41,8 @@ nav {
 .textBlurb {
     width: 100%;
     font-family: 'Montserrat';
+    display: flex;
+    flex-direction: column;
 }
 
 .textBlurb > h1 {
@@ -118,4 +120,14 @@ nav {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.blogImage {
+    max-height: 40vh;
+    width: auto;
+    align-self: center;
+}
+
+.blogDate {
+    font-style: italic;
 }

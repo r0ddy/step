@@ -12,15 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-$(function(){
-    $("nav").load("nav.html");    
-});
+function getToRootDirectory(){
+    let path = window.location.pathname;
+    let directories = -1;
+    for(let index = 0; index < path.length; index++){
+        if(path[index] === "/"){
+            directories++;
+        }
+    }
+    let root = '../'.repeat(directories);
+    return root;
+}
+
+function loadNavbar(){
+    let root = getToRootDirectory();
+    $("nav").load(root + "nav.html", () => {
+        let navLinks = Array.from(document.querySelectorAll(".navLink"));
+        navLinks.forEach((navLink) => {
+            let filename = navLink.href.split('/').pop()
+            navLink.href = root + filename;
+        });
+    });
+}
 
 function loadProjects(){
     let projects = [
         {
             image: {
-                src: "/images/animalbytes.png",
+                src: "images/animalbytes.png",
                 alt: "A screenshot of AnimalBytes."
             },
             description: 
@@ -71,41 +90,42 @@ function loadProjects(){
     });
 }
 
-function loadBlogEntries(){
-    let blogEntries = [
-        {
-            image: {
-                src: "/images/google.jpg",
-                alt: "Google logo."
-            },
-            text: {
-                title: "Google Internship: Week 2",
-                date: "May 26, 2020",
-                body: 
-                "The reason I start my blog with a post about my second week \
-                at Google is because not much happened during my short week 1. \
-                During my first week, I was just setting up my machine and \
-                getting to know my hosts and pod. It was during my second week \
-                that I learned more."
-            },
-            link: ""
+let blogEntries = [
+    {
+        image: {
+            src: "/images/google.jpg",
+            alt: "Google logo."
         },
-        {
-            image: {
-                src: "/images/google.jpg",
-                alt: "Google logo."
-            },
-            text: {
-                title: "Google Internship: Week 3",
-                date: "June 1, 2020",
-                body: 
-                "Week 3 has just begun. I am suppose to wrap up my week 2 \
-                project (this website), but I think I might have to spend a \
-                more time trying to complete my blog."
-            },
-            link: ""
-        }
-    ];
+        text: {
+            title: "Google Internship: Week 2",
+            date: "May 26, 2020",
+            body: 
+            "The reason I start my blog with a post about my second week \
+            at Google is because not much happened during my short week 1. \
+            During my first week, I was just setting up my machine and \
+            getting to know my hosts and pod. It was during my second week \
+            that I learned more."
+        },
+        link: "/blog/0.html"
+    },
+    {
+        image: {
+            src: "/images/google.jpg",
+            alt: "Google logo."
+        },
+        text: {
+            title: "Google Internship: Week 3",
+            date: "June 1, 2020",
+            body: 
+            "Week 3 has just begun. I am suppose to wrap up my week 2 \
+            project (this website), but I think I might have to spend a \
+            more time trying to complete my blog."
+        },
+        link: "/blog/1.html"
+    }
+];
+
+function loadBlogEntries(){
     let blogEntryTemplate = document.querySelector('#blogEntryTemplate')
     blogEntries.forEach((blogEntry) => {
         blogEntryTemplate.content.querySelector('a.blogLink').href = blogEntry.link;
@@ -118,3 +138,14 @@ function loadBlogEntries(){
         document.body.querySelector('.textBlurb').appendChild(clone);
     });
 }   
+
+function loadBlog(blogIndex){
+    $("div#content").load("blogTemplate.html", () => {
+        let blog = blogEntries[blogIndex];
+        document.querySelector('h1.blogTitle').textContent = blog.text.title;
+        document.querySelector('img.blogImage').src = blog.image.src;
+        document.querySelector('img.blogImage').alt = blog.image.alt;
+        document.querySelector('p.blogDate').textContent = blog.text.date;
+        document.querySelector('p.blogBody').textContent = blog.text.body;
+    });
+}
