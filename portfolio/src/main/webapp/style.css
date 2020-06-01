@@ -75,6 +75,11 @@ nav {
     font-size: 12px;
 }
 
+.blogLink {
+    text-decoration: none;
+    color: black;
+}
+
 .blogEntry {
     height: 100px;
     width: 100%;
@@ -85,9 +90,11 @@ nav {
     border: 2px solid black;
     border-radius: 16px;
     padding: 10px;
+    margin-bottom: 24px;
 }
 
 .blogThumbnail {
+    overflow: hidden;
     height: 100%;
 }
 
@@ -99,12 +106,16 @@ nav {
     justify-content: space-evenly;
 }
 
+.blogText {
+    margin: 0;
+}
+
+.blogSummaryDate {
+    font-style: italic;
+}
+
 .blogSummaryText {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-}
-
-.blogText {
-    margin: 0;
 }

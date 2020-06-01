@@ -18,23 +18,24 @@
                     Welcome to my blog page! This is where I talk about things
                     going on in my life and my opinion on current events.
                 </p>
-                <div class="blogEntry">
-                    <div class="blogThumbnail">
-                        <img class="blogThumbnailImage" src="/images/google.jpg" height="100%" width="auto" />
-                    </div>
-                    <div class="blogSummary">
-                        <h4 class="blogSummaryTitle blogText">Google Internship: Week 2</h4>
-                        <p class="blogSummaryDate blogText"><i>May 26, 2020</i></p>
-                        <p class="blogSummaryText blogText">
-                            The reason I start my blog with a post about my second week
-                            at Google is because not much happened during my short week 1.
-                            During my first week, I was just setting up my machine and
-                            getting to know my hosts and pod. It was during my second week
-                            that I learned more.
-                        </p>
-                    </div>                
-                </div>
             </div>
         </div>
     </body>
+    <template id="blogEntryTemplate">
+        <a class="blogLink" href="">
+            <div class="blogEntry">
+            <div class="blogThumbnail">
+                <img class="blogThumbnailImage" src="" height="100%" width="auto" />
+            </div>
+            <div class="blogSummary">
+                <h4 class="blogSummaryTitle blogText"></h4>
+                <p class="blogSummaryDate blogText"></p>
+                <p class="blogSummaryText blogText"></p>
+            </div>                
+        </div>
+        </a>
+    </template>
+    <script>
+        loadBlogEntries();
+    </script>
 </html>
