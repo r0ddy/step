@@ -66,7 +66,7 @@ function loadProjects(){
         projectTemplate.content.querySelector('img.projectImage').src = project.image.src;
         projectTemplate.content.querySelector('img.projectImage').alt = project.image.alt;
         projectTemplate.content.querySelector('p.projectDescription').textContent= project.description;
-        let clone = document.importNode(projectTemplate.content, true); // where true means deep copy
+        let clone = document.importNode(projectTemplate.content, /*deep_copy=*/ true);
         document.body.querySelector('.projects').appendChild(clone);
     });
 }
