@@ -39,8 +39,8 @@ nav {
 }
 
 .textBlurb {
+    width: 100%;
     font-family: 'Montserrat';
-    margin: 0 10px 0 0;
 }
 
 .textBlurb > h1 {
@@ -73,4 +73,38 @@ nav {
 
 .projectDescription {
     font-size: 12px;
+}
+
+.blogEntry {
+    height: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 2px solid black;
+    border-radius: 16px;
+    padding: 10px;
+}
+
+.blogThumbnail {
+    height: 100%;
+}
+
+.blogSummary {
+    height: 100%;
+    max-width: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.blogSummaryText {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.blogText {
+    margin: 0;
 }
