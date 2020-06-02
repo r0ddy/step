@@ -150,8 +150,24 @@ function loadBlog(blogIndex){
     });
 }
 
-async function getTextFromServer(){
+async function getCommentsFromServer(){
     let request = await fetch("/data");
-    let text = await request.text(); 
-    document.querySelector('p#textFromServer').textContent = text;
+    let comments = await request.json();
+    return comments;
+}
+
+function populateList(listNode, list){
+    list = Array.from(list);
+    list.forEach((item) => {
+        let itemNode = document.createElement("LI");
+        let itemText = document.createTextNode(item);
+        itemNode.appendChild(itemText);
+        listNode.appendChild(itemNode);
+    });
+}
+
+async function populateComments(){
+    let comments = await getCommentsFromServer();
+    let commentsNode = document.querySelector('ul#comments');
+    populateList(commentsNode, comments);
 }
