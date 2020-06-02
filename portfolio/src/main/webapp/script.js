@@ -141,11 +141,11 @@ function loadBlogEntries(){
 
 function loadBlog(blogIndex){
     $("div#content").load("blogTemplate.html", () => {
-        let blog = blogEntries[blogIndex];
-        document.querySelector('h1.blogTitle').textContent = blog.text.title;
-        document.querySelector('img.blogImage').src = blog.image.src;
-        document.querySelector('img.blogImage').alt = blog.image.alt;
-        document.querySelector('p.blogDate').textContent = blog.text.date;
-        document.querySelector('p.blogBody').textContent = blog.text.body;
+        let blogEntry = blogEntries[blogIndex];
+        document.querySelector('h1.blogTitle').textContent = blogEntry.text.title;
+        document.querySelector('img.blogImage').src = blogEntry.image.src;
+        document.querySelector('img.blogImage').alt = blogEntry.image.alt;
+        document.querySelector('p.blogDate').textContent = blogEntry.text.date;
+        document.querySelector('p.blogBody').textContent = blogEntry.text.body;
     });
 }
