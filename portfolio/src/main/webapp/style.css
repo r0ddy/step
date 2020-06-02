@@ -131,3 +131,7 @@ nav {
 .blogDate {
     font-style: italic;
 }
+
+#getTextButton {
+    max-width: 15%;
+}
