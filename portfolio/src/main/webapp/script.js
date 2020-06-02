@@ -149,3 +149,9 @@ function loadBlog(blogIndex){
         document.querySelector('p.blogBody').textContent = blogEntry.text.body;
     });
 }
+
+async function getTextFromServer(){
+    let request = await fetch("/data");
+    let text = await request.text(); 
+    document.querySelector('p#textFromServer').textContent = text;
+}
