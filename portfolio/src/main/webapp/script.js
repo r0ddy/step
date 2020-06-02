@@ -152,7 +152,6 @@ function loadBlog(blogIndex){
 
 async function getCommentsFromServer(){
     let request = await fetch("/data");
-<<<<<<< HEAD
     let comments = await request.json();
     return comments;
 }
