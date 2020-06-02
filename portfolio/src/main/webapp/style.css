@@ -39,8 +39,10 @@ nav {
 }
 
 .textBlurb {
+    width: 100%;
     font-family: 'Montserrat';
-    margin: 0 10px 0 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .textBlurb > h1 {
@@ -73,4 +75,59 @@ nav {
 
 .projectDescription {
     font-size: 12px;
+}
+
+.blogLink {
+    text-decoration: none;
+    color: black;
+}
+
+.blogEntry {
+    height: 100px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 2px solid black;
+    border-radius: 16px;
+    padding: 10px;
+    margin-bottom: 24px;
+}
+
+.blogThumbnail {
+    overflow: hidden;
+    height: 100%;
+}
+
+.blogSummary {
+    height: 100%;
+    max-width: 85%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.blogText {
+    margin: 0;
+}
+
+.blogSummaryDate {
+    font-style: italic;
+}
+
+.blogSummaryText {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.blogImage {
+    max-height: 40vh;
+    width: auto;
+    align-self: center;
+}
+
+.blogDate {
+    font-style: italic;
 }
