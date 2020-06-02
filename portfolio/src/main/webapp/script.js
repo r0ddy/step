@@ -152,6 +152,6 @@ function loadBlog(blogIndex){
 
 async function getTextFromServer(){
     let request = await fetch("/data");
-    let text = await request.text(); 
+    let text = await request.json();
     document.querySelector('p#textFromServer').textContent = text;
 }
