@@ -57,6 +57,11 @@ public class CommentServlet extends HttpServlet {
         response.sendRedirect("/experiments.html");
     }
 
+    /**
+     * Converts list of comments stored in Datastore into JSON.
+     * Used for sending response to user.
+     * @return JSON format of comments list as a String.
+     */
     private static String getCommentsJSON(){
         List<Comment> comments = CommentUtil.getComments();
         Gson gson = new Gson();
