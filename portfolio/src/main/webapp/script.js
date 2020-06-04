@@ -175,8 +175,8 @@ function populateList(list){
         // Find which list this comment and its responses should go under
         let listNodeSelector = "#responses";
         // if comment has no parent its selector is just responses, otherwise append id
-        if(item.hasOwnProperty("parent_id")){
-            listNodeSelector += item.parent_id;
+        if(item.hasOwnProperty("parentId")){
+            listNodeSelector += item.parentId;
         }
 
         // Add all corresponding comment elements to list
