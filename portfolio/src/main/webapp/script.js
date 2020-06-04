@@ -151,23 +151,77 @@ function loadBlog(blogIndex){
 }
 
 async function getCommentsFromServer(){
-    let request = await fetch("/data");
+    let request = await fetch("/comments");
     let comments = await request.json();
     return comments;
 }
 
-function populateList(listNode, list){
-    list = Array.from(list);
+function populateList(list){
     list.forEach((item) => {
-        let itemNode = document.createElement("LI");
-        let itemText = document.createTextNode(item);
-        itemNode.appendChild(itemText);
+        // Create node for comment
+        let itemNode = document.createElement("li");
+        itemNode.id = "comment" + item.id;
+        itemNode.innerText = item.text;
+        itemNode.onclick = () => createResponseForm(item.id);
+
+        // Create node for responses to this comment
+        let responsesNode = document.createElement("ul");
+        responsesNode.id = "responses" + item.id;
+
+        // Create node for response form holder for this comment
+        let responseFormholderNode = document.createElement("div");
+        responseFormholderNode.id = "responseHolder" + item.id;
+        
+        // Find which list this comment and its responses should go under
+        let listNodeSelector = "#responses";
+        // if comment has no parent its selector is just responses, otherwise append id
+        if(item.hasOwnProperty("parent_id")){
+            listNodeSelector += item.parent_id;
+        }
+
+        // Add all corresponding comment elements to list
+        let listNode = document.querySelector(listNodeSelector);
         listNode.appendChild(itemNode);
+        listNode.appendChild(responsesNode);
+        listNode.appendChild(responseFormholderNode);
     });
 }
 
-async function populateComments(){
+async function loadComments(){
     let comments = await getCommentsFromServer();
-    let commentsNode = document.querySelector('ul#comments');
-    populateList(commentsNode, comments);
+    populateList(comments);
+    let commentForm = createCommentForm();
+    document.querySelector(".textBlurb").appendChild(commentForm);
+}
+
+function createCommentForm(){
+    let commentFormTemplate = document.querySelector("#postFormTemplate");
+    let clone = document.importNode(commentFormTemplate.content, true);
+    clone.querySelector("form").id = "commentForm";
+    clone.querySelector(".textBox").placeholder += "comment";
+    return clone;
+}
+
+function createResponseForm(id){
+    // Remove responseForm if it exists
+    let existingResponseForm = document.querySelector("#responseForm");
+    if(existingResponseForm){
+        existingResponseForm.parentElement.removeChild(existingResponseForm);
+    }
+
+    // Populate under comment with id
+    let commentFormTemplate = document.querySelector("#postFormTemplate");
+    let clone = document.importNode(commentFormTemplate.content, true);
+    clone.querySelector("form").id = "responseForm";
+    clone.querySelector(".textBox").placeholder += "response";
+
+    // Create hidden parentId input
+    let parentIdNode = document.createElement("input");
+    parentIdNode.type = "number";
+    parentIdNode.name = "parentId";
+    parentIdNode.value = id;
+    parentIdNode.hidden = true;
+
+    clone.querySelector("form").appendChild(parentIdNode);
+    document.querySelector("div#responseHolder" + id).appendChild(clone);
 }
