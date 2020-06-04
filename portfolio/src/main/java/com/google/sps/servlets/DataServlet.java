@@ -31,14 +31,11 @@ public class DataServlet extends HttpServlet {
 
     @Override
     public void init() {
-        Comment.AddComment("I am a comment!");
-        Comment.AddResponse("I am a response!", 0);
-        Comment.AddResponse("I am a response to a response", 1);
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String json = convertToJsonUsingGson(Comment.COMMENTS);
+        String json = convertToJsonUsingGson(Comment.GetComments());
         response.setContentType("application/json;");
         response.getWriter().println(json);
     }
@@ -52,7 +49,7 @@ public class DataServlet extends HttpServlet {
         }
         else{
             try{
-                Integer parentId = Integer.parseInt(parentIdValue);
+                Long parentId = Long.parseLong(parentIdValue);
                 Comment.AddResponse(textValue, parentId);
             } catch(NumberFormatException e) {
                 e.printStackTrace();
