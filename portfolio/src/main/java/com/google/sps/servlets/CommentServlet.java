@@ -19,11 +19,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-import java.util.ArrayList;
-import com.google.gson.Gson;
 import com.google.sps.data.Comment;
-
+import com.google.sps.data.CommentUtil;
+import com.google.gson.Gson;
+import java.util.List;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/comments")
@@ -35,7 +34,7 @@ public class CommentServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String json = convertToJsonUsingGson(Comment.GetComments());
+        String json = getCommentsJSON();
         response.setContentType("application/json;");
         response.getWriter().println(json);
     }
@@ -45,12 +44,12 @@ public class CommentServlet extends HttpServlet {
         String parentIdValue = request.getParameter("parentId");
         String textValue = request.getParameter("text");
         if(parentIdValue == null){
-            Comment.AddComment(textValue);
+            CommentUtil.addComment(textValue);
         }
         else{
             try{
                 Long parentId = Long.parseLong(parentIdValue);
-                Comment.AddResponse(textValue, parentId);
+                CommentUtil.addResponse(textValue, parentId);
             } catch(NumberFormatException e) {
                 e.printStackTrace();
             }
@@ -58,7 +57,8 @@ public class CommentServlet extends HttpServlet {
         response.sendRedirect("/experiments.html");
     }
 
-    private String convertToJsonUsingGson(List<Comment> comments) {
+    private static String getCommentsJSON(){
+        List<Comment> comments = CommentUtil.getComments();
         Gson gson = new Gson();
         String json = gson.toJson(comments);
         return json;

@@ -189,7 +189,6 @@ function populateList(list){
 
 async function loadComments(){
     let comments = await getCommentsFromServer();
-    console.log(comments);
     populateList(comments);
     let commentForm = createCommentForm();
     document.querySelector(".textBlurb").appendChild(commentForm);
