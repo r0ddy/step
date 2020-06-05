@@ -15,6 +15,7 @@ import com.google.appengine.api.datastore.FetchOptions;
  * and retrieving Comment and Response objects.
  */
 public final class CommentUtil {
+
     /**
      * Creates and stores a comment given a message.
      * @param text The comment's message.

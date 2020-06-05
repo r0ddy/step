@@ -22,7 +22,7 @@ public class Comment {
     private String text;
     
     /**
-     * The date the user wrote the message in dd/mm/yyyy format.
+     * The date the user wrote the message in milliseconds.
      */
     private Long datePosted;
 
