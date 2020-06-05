@@ -150,13 +150,32 @@ function loadBlog(blogIndex){
     });
 }
 
+let commentsVisible = 0;
+
 async function getCommentsFromServer(){
-    let request = await fetch("/comments");
+    let params = {
+        numComments: 5
+    };
+    return getComments(params);
+}
+
+async function getMoreCommentsFromServer(){
+    let additionalNumComments = document.querySelector("#numComments").value;
+    console.log(additionalNumComments);
+    let params = {
+        numComments: commentsVisible + additionalNumComments
+    };
+    return getComments(params);
+}
+
+async function getComments(params){
+    let request = await fetch("/comments?" + $.param(params));
     let comments = await request.json();
     return comments;
 }
 
 function populateList(list){
+    commentsVisible = 0;
     list.forEach((item) => {
         // Create node for comment
         let itemNode = document.createElement("li");
@@ -184,6 +203,7 @@ function populateList(list){
         listNode.appendChild(itemNode);
         listNode.appendChild(responsesNode);
         listNode.appendChild(responseFormholderNode);
+        commentsVisible++;
     });
 }
 
@@ -192,6 +212,12 @@ async function loadComments(){
     populateList(comments);
     let commentForm = createCommentForm();
     document.querySelector(".textBlurb").appendChild(commentForm);
+}
+
+async function loadMoreComments(){
+    document.querySelector("#responses").innerHTML = "";
+    let comments = await getMoreCommentsFromServer();
+    populateList(comments);
 }
 
 function createCommentForm(){
