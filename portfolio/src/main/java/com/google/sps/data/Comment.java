@@ -3,6 +3,7 @@ package com.google.sps.data;
 import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.text.ParseException;
 import com.google.appengine.api.datastore.Entity;
 
 /** 
@@ -23,24 +24,26 @@ public class Comment {
     /**
      * The date the user wrote the message in dd/mm/yyyy format.
      */
-    private String datePosted;
+    private Long datePosted;
 
     /**
      * Constructor to use when receiving input from user.
      */
     protected Comment(String text){
         this.text = text;
-        this.datePosted = convertDateToString(new Date());
+        this.datePosted = System.currentTimeMillis();
     }
 
     /**
      * Constructor to use when receiving input from Datastore.
      */
-    protected Comment(Long id, String text, String datePosted){
+    protected Comment(Long id, String text, Long datePosted){
         this.id = id;
         this.text = text;
         this.datePosted = datePosted;
     }
+
+    private static DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
     /**
      * Helper function to turn Date object into
@@ -49,9 +52,18 @@ public class Comment {
      * @return The String representation.
      */
     private static String convertDateToString(Date date){
-        DateFormat monthDayYear = new SimpleDateFormat("dd/MM/yyyy");
-        String dateString = monthDayYear.format(date);
+        String dateString = formatter.format(date);
         return dateString;
+    }
+
+    private static Date convertStringToDate(String dateString){
+        try{
+            Date date = formatter.parse(dateString);
+            return date;
+        } catch(ParseException e){
+            e.printStackTrace();
+            return new Date();
+        }
     }
 
     /**

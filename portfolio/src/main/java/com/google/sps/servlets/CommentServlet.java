@@ -34,9 +34,19 @@ public class CommentServlet extends HttpServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String json = getCommentsJSON();
-        response.setContentType("application/json;");
-        response.getWriter().println(json);
+        String numCommentsValue = request.getParameter("numComments");
+        Integer numComments = null;
+        try{
+            numComments = (Integer) Integer.parseInt(numCommentsValue);
+        }
+        catch(NumberFormatException e){
+            e.printStackTrace();
+        }
+        finally{
+            String json = getCommentsJSON(numComments);
+            response.setContentType("application/json;");
+            response.getWriter().println(json);
+        }
     }
 
     @Override
@@ -62,8 +72,8 @@ public class CommentServlet extends HttpServlet {
      * Used for sending response to user.
      * @return JSON format of comments list as a String.
      */
-    private static String getCommentsJSON(){
-        List<Comment> comments = CommentUtil.getComments();
+    private static String getCommentsJSON(Integer numComments){
+        List<Comment> comments = CommentUtil.getComments(numComments);
         Gson gson = new Gson();
         String json = gson.toJson(comments);
         return json;
