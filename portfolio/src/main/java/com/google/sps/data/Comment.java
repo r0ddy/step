@@ -43,29 +43,6 @@ public class Comment {
         this.datePosted = datePosted;
     }
 
-    private static DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-    /**
-     * Helper function to turn Date object into
-     * String using dd/mm/yyyy format.
-     * @param date The date object to convert.
-     * @return The String representation.
-     */
-    private static String convertDateToString(Date date){
-        String dateString = formatter.format(date);
-        return dateString;
-    }
-
-    private static Date convertStringToDate(String dateString){
-        try{
-            Date date = formatter.parse(dateString);
-            return date;
-        } catch(ParseException e){
-            e.printStackTrace();
-            return new Date();
-        }
-    }
-
     /**
      * Creates an entity from this for storing in Datastore.
      * @return Entity to put into Datastore.
