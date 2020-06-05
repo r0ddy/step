@@ -48,7 +48,7 @@ public class CommentServlet extends HttpServlet {
             numComments = (Integer) Integer.parseInt(numCommentsValue);
         }
         catch(NumberFormatException e){
-            logger.log(Level.Warning, "Cannot parse numComments", e);
+            logger.log(Level.WARNING, "Cannot parse numComments", e);
         }
         finally{
             String json = getCommentsJSON(numComments);
@@ -69,7 +69,7 @@ public class CommentServlet extends HttpServlet {
                 Long parentId = Long.parseLong(parentIdValue);
                 CommentUtil.addResponse(textValue, parentId);
             } catch(NumberFormatException e) {
-                logger.log(Level.Warning, "Cannot parse parentId", e);
+                logger.log(Level.WARNING, "Cannot parse parentId", e);
             }
         }
         response.sendRedirect("/experiments.html");
