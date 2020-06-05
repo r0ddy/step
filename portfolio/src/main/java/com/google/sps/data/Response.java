@@ -16,7 +16,7 @@ public final class Response extends Comment {
     /**
      * Constructor to use if input is from user.
      */
-    public Response(String text, long parentId){
+    public Response(String text, Long parentId){
         super(text);
         this.parentId = parentId;
     }
@@ -24,7 +24,7 @@ public final class Response extends Comment {
     /**
      * Constructor to use if input is from Datastore.
      */
-    public Response(Long id, String text, String datePosted, Long parentId){
+    public Response(Long id, String text, Long datePosted, Long parentId){
         super(id, text, datePosted);
         this.parentId = parentId;
     }

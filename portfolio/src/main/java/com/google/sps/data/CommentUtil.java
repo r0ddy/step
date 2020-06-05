@@ -7,12 +7,15 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.FetchOptions;
 
 /**
  * Represents a utility for creating, storing,
  * and retrieving Comment and Response objects.
  */
 public final class CommentUtil {
+
     /**
      * Creates and stores a comment given a message.
      * @param text The comment's message.
@@ -36,12 +39,19 @@ public final class CommentUtil {
      * Retrieves all comments from the Datastore.
      * @return List of Comment objects retrieved from Datastore.
      */
-    public static List<Comment> getComments(){
-        Query query = new Query("Comment");
+    public static List<Comment> getComments(Integer numComments){
+        Query query = new Query("Comment").addSort("datePosted", SortDirection.ASCENDING);
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         PreparedQuery results = datastore.prepare(query);
+        Iterable<Entity> commentEntities;
+        if(numComments == null){
+            commentEntities = results.asIterable();
+        }
+        else{
+            commentEntities = results.asIterable(FetchOptions.Builder.withLimit(numComments));
+        }
         List<Comment> comments = new ArrayList<>();
-        for (Entity entity : results.asIterable()) {
+        for (Entity entity : commentEntities) {
             Comment comment = convertEntityToComment(entity);
             comments.add(comment);
         }
@@ -57,7 +67,7 @@ public final class CommentUtil {
     private static Comment convertEntityToComment(Entity entity){
         long id = entity.getKey().getId();
         String text = (String) entity.getProperty("text");
-        String datePosted = (String) entity.getProperty("datePosted");
+        Long datePosted = (Long) entity.getProperty("datePosted");
         Long parentId = (Long) entity.getProperty("parentId");
         Comment comment;
         if(parentId == null){

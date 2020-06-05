@@ -7,7 +7,8 @@
         <link href='https://fonts.googleapis.com/css?family=Arvo' rel='stylesheet'>
         <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="script.js"></script>
+        <script src="nav.js"></script>
+        <script src="experiments.js"></script>
     </head>
     <body onload="loadComments()">
         <nav></nav>
@@ -18,6 +19,11 @@
                     This page is purely for experiements and tutorials.
                 </p>
                 <p>Week 3: Step 5 Datastore</p>
+                <div>
+                    <label>Number of comments to retrieve:</label>
+                    <input type="number" id="numComments" min="1" value="1">
+                    <button onclick="loadMoreComments()">Get More Comments</button>
+                </div>
                 <ul id="responses">
                     
                 </ul>
