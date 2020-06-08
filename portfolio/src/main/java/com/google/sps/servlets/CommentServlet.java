@@ -37,7 +37,7 @@ public class CommentServlet extends HttpServlet {
 
     @Override
     public void init() {
-        logger = Logger.getLogger("com.google.sps.commentutil");
+        logger = Logger.getLogger("com.google.sps.commentservlet");
     }
 
     @Override

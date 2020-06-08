@@ -2,19 +2,26 @@ package com.google.sps.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.FetchOptions;
+import com.google.appengine.api.datastore.Transaction;
+import com.google.appengine.api.datastore.TransactionOptions;
+import java.util.ConcurrentModificationException;
 
 /**
  * Represents a utility for creating, storing,
  * and retrieving Comment and Response objects.
  */
 public final class CommentUtil {
+    private static Logger logger = Logger.getLogger("com.google.sps.commentutil");
 
     /**
      * Creates and stores a comment given a message.
@@ -56,6 +63,40 @@ public final class CommentUtil {
             comments.add(comment);
         }
         return comments;
+    }
+
+    public static void deleteAllComments(){
+        int retries = 3;
+        // Projected query for only comment ids
+        Query query = new Query("Comment").setKeysOnly();
+
+        // Begin transaction for deleting all comments
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Iterable<Entity> results = datastore.prepare(query).asIterable();
+        TransactionOptions options = TransactionOptions.Builder.withXG(true);
+        Transaction deleteAllTransaction = datastore.beginTransaction(options);
+        List<Key> keys = new ArrayList<>();
+        for(Entity entity : results){
+            keys.add(entity.getKey());
+        }
+        while (true) {
+            try {
+                datastore.delete(deleteAllTransaction, keys);
+                deleteAllTransaction.commit();
+                break;
+            } catch (ConcurrentModificationException e) {
+                if (retries == 0) {
+                    logger.log(Level.WARNING, "Cannot delete all comments", e);
+                    break;
+                }
+                // Allow retry to occur
+                --retries;
+            } finally {
+                if (deleteAllTransaction.isActive()) {
+                    deleteAllTransaction.rollback();
+                }
+            }
+        }
     }
 
     /**
