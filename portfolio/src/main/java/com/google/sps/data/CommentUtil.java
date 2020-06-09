@@ -79,7 +79,7 @@ public final class CommentUtil {
         for(Entity entity : results){
             keys.add(entity.getKey());
         }
-        while (true) {
+        while (retries > 0) {
             try {
                 datastore.delete(deleteAllTransaction, keys);
                 deleteAllTransaction.commit();
@@ -87,14 +87,13 @@ public final class CommentUtil {
             } catch (ConcurrentModificationException e) {
                 if (retries == 0) {
                     logger.log(Level.WARNING, "Cannot delete all comments", e);
-                    break;
                 }
-                // Allow retry to occur
-                --retries;
             } finally {
                 if (deleteAllTransaction.isActive()) {
                     deleteAllTransaction.rollback();
                 }
+                // Allow retry to occur
+                --retries;
             }
         }
     }
