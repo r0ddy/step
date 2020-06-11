@@ -16,17 +16,17 @@ public final class Response extends Comment {
     /**
      * Constructor to use if input is from user.
      */
-    public Response(String text, Long parentId){
-        super(text);
+    public Response(String userNickname, String text, Long parentId){
+        super(userNickname, text);
         this.parentId = parentId;
     }
 
     /**
      * Constructor to use if input is from Datastore.
      */
-    public Response(Long id, String text, Long datePosted, Long parentId){
-        super(id, text, datePosted);
-        this.parentId = parentId;
+    public Response(Entity responseEntity){
+        super(responseEntity);
+        this.parentId = (Long) responseEntity.getProperty("parentId");;
     }
 
     @Override

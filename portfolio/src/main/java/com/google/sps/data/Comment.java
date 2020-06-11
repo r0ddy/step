@@ -27,9 +27,15 @@ public class Comment {
     private Long datePosted;
 
     /**
+     * The user id of the user who posted this comment.
+     */
+    private String userNickname;
+
+    /**
      * Constructor to use when receiving input from user.
      */
-    protected Comment(String text){
+    protected Comment(String userNickname, String text){
+        this.userNickname = userNickname;
         this.text = text;
         this.datePosted = System.currentTimeMillis();
     }
@@ -37,10 +43,11 @@ public class Comment {
     /**
      * Constructor to use when receiving input from Datastore.
      */
-    protected Comment(Long id, String text, Long datePosted){
-        this.id = id;
-        this.text = text;
-        this.datePosted = datePosted;
+    protected Comment(Entity commentEntity){
+        this.id = commentEntity.getKey().getId();
+        this.userNickname = (String) commentEntity.getProperty("userNickname");
+        this.text = (String) commentEntity.getProperty("text");
+        this.datePosted = (Long) commentEntity.getProperty("datePosted");
     }
 
     /**
@@ -50,6 +57,7 @@ public class Comment {
      */
     protected Entity getEntity(){
         Entity commentEntity = new Entity("Comment");
+        commentEntity.setProperty("userNickname", this.userNickname);
         commentEntity.setProperty("text", this.text);
         commentEntity.setProperty("datePosted", this.datePosted);
         return commentEntity;

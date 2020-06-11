@@ -27,8 +27,8 @@ public final class CommentUtil {
      * Creates and stores a comment given a message.
      * @param text The comment's message.
      */
-    public static void addComment(String text){
-        Comment comment = new Comment(text);
+    public static void addComment(String userNickname, String text){
+        Comment comment = new Comment(userNickname, text);
         storeComment(comment);
     }
 
@@ -37,8 +37,8 @@ public final class CommentUtil {
      * @param text The response's message.
      * @param parentId The id of the parent response or comment.
      */
-    public static void addResponse(String text, long parentId){
-        Response response = new Response(text, parentId);
+    public static void addResponse(String userNickname, String text, long parentId){
+        Response response = new Response(userNickname, text, parentId);
         storeComment(response);
     }
 
@@ -105,17 +105,8 @@ public final class CommentUtil {
      * @return The resulting Entity or Comment.
      */
     private static Comment convertEntityToComment(Entity entity){
-        long id = entity.getKey().getId();
-        String text = (String) entity.getProperty("text");
-        Long datePosted = (Long) entity.getProperty("datePosted");
         Long parentId = (Long) entity.getProperty("parentId");
-        Comment comment;
-        if(parentId == null){
-            comment = new Comment(id, text, datePosted);
-        }
-        else{
-            comment = new Response(id, text, datePosted, parentId);
-        }
+        Comment comment = parentId == null ? new Comment(entity) : new Response(entity);
         return comment;
     }
 
