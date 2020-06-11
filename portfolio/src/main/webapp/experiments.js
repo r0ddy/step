@@ -112,7 +112,7 @@ async function loadUserAuthButton(){
     document.querySelector("p#userAuthText").innerText = userResponse.loggedIn ? "Logout" : "Login";
 }
 
-async function loadExperimentsBody(){
-    await loadComments();
-    await loadUserAuthButton();
+function loadExperimentsBody(){
+    loadComments();
+    loadUserAuthButton();
 }
