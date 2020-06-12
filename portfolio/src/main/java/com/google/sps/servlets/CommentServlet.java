@@ -25,6 +25,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.sps.data.Comment;
 import com.google.sps.data.CommentUtil;
 import com.google.gson.Gson;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.users.User;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/comments")
@@ -35,9 +38,15 @@ public class CommentServlet extends HttpServlet {
      */
     private static Logger logger;
 
+    /**
+     * Checks state of user in this class.
+     */
+    private static UserService userService;
+
     @Override
     public void init() {
         logger = Logger.getLogger("com.google.sps.commentservlet");
+        userService = UserServiceFactory.getUserService();
     }
 
     @Override
@@ -59,17 +68,21 @@ public class CommentServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String parentIdValue = request.getParameter("parentId");
-        String textValue = request.getParameter("text");
-        if(parentIdValue == null){
-            CommentUtil.addComment(textValue);
-        }
-        else{
-            try{
-                Long parentId = Long.parseLong(parentIdValue);
-                CommentUtil.addResponse(textValue, parentId);
-            } catch(NumberFormatException e) {
-                logger.log(Level.WARNING, "Cannot parse parentId", e);
+        if(userService.isUserLoggedIn()){
+            User currentUser = userService.getCurrentUser();
+            String userNickname = currentUser.getNickname();
+            String parentIdValue = request.getParameter("parentId");
+            String textValue = request.getParameter("text");
+            if(parentIdValue == null){
+                CommentUtil.addComment(userNickname, textValue);
+            }
+            else{
+                try{
+                    Long parentId = Long.parseLong(parentIdValue);
+                    CommentUtil.addResponse(userNickname, textValue, parentId);
+                } catch(NumberFormatException e) {
+                    logger.log(Level.WARNING, "Cannot parse parentId", e);
+                }
             }
         }
         response.sendRedirect("/experiments.html");

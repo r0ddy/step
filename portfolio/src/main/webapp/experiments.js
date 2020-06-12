@@ -99,3 +99,20 @@ function createResponseForm(id){
     clone.querySelector("form").appendChild(parentIdNode);
     document.querySelector("div#responseHolder" + id).appendChild(clone);
 }
+
+async function getUseResponseFromServer(){
+    let request = await fetch("/user");
+    let userResponse = await request.json();
+    return userResponse;
+}
+
+async function loadUserAuthButton(){
+    let userResponse = await getUseResponseFromServer();
+    document.querySelector("a#userAuthLink").href = userResponse.url;
+    document.querySelector("p#userAuthText").innerText = userResponse.loggedIn ? "Logout" : "Login";
+}
+
+function loadExperimentsBody(){
+    loadComments();
+    loadUserAuthButton();
+}
