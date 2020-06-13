@@ -24,7 +24,7 @@ async function getCommentsResponse(params){
 
 function populateList(params){
     let list = params.comments;
-    let action = params.action;
+    let action = params.blobstoreUrl;
     commentsVisible = 0;
     list.forEach((item) => {
         // Create node for comment
@@ -53,6 +53,14 @@ function populateList(params){
 
         // Add all corresponding comment elements to list
         let listNode = document.querySelector(listNodeSelector);
+
+        // Create node for image
+        if(item.hasOwnProperty("imageUrl")){
+            let imageNode = document.createElement("img");
+            imageNode.src = item.imageUrl;
+            imageNode.class = "commentImage";
+            listNode.appendChild(imageNode);
+        }
         listNode.appendChild(itemNode);
         listNode.appendChild(responsesNode);
         listNode.appendChild(responseFormholderNode);
@@ -77,7 +85,7 @@ function createCommentForm(params){
     let commentFormTemplate = document.querySelector("#postFormTemplate");
     let clone = document.importNode(commentFormTemplate.content, true);
     clone.querySelector("form").id = "commentForm";
-    clone.querySelector("form").action = params.action;
+    clone.querySelector("form").action = params.blobstoreUrl;
     clone.querySelector(".textBox").placeholder += "comment";
     return clone;
 }
@@ -94,7 +102,7 @@ function createResponseForm(params){
     let commentFormTemplate = document.querySelector("#postFormTemplate");
     let clone = document.importNode(commentFormTemplate.content, true);
     clone.querySelector("form").id = "responseForm";
-    clone.querySelector("form").action = params.action;
+    clone.querySelector("form").action = params.blobstoreUrl;
     clone.querySelector(".textBox").placeholder += "response";
 
     // Create hidden parentId input
