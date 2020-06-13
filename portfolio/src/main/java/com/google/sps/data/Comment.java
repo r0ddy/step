@@ -32,12 +32,18 @@ public class Comment {
     private String userNickname;
 
     /**
+     * The URL of the image associated with this comment.
+     */
+    private String imageUrl;
+
+    /**
      * Constructor to use when receiving input from user.
      */
-    protected Comment(String userNickname, String text){
+    protected Comment(String userNickname, String text, String imageUrl){
         this.userNickname = userNickname;
         this.text = text;
         this.datePosted = System.currentTimeMillis();
+        this.imageUrl = imageUrl;
     }
 
     /**
@@ -48,6 +54,7 @@ public class Comment {
         this.userNickname = (String) commentEntity.getProperty("userNickname");
         this.text = (String) commentEntity.getProperty("text");
         this.datePosted = (Long) commentEntity.getProperty("datePosted");
+        this.imageUrl = (String) commentEntity.getProperty("imageUrl");
     }
 
     /**
@@ -60,6 +67,7 @@ public class Comment {
         commentEntity.setProperty("userNickname", this.userNickname);
         commentEntity.setProperty("text", this.text);
         commentEntity.setProperty("datePosted", this.datePosted);
+        commentEntity.setProperty("imageUrl", this.imageUrl);
         return commentEntity;
     }
 }

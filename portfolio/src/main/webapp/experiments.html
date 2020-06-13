@@ -40,8 +40,9 @@
         </div>
     </body>
     <template id="postFormTemplate">
-        <form action="/comments" class="postForm" method="POST">
+        <form id="postForm" action="/comments" class="postForm" method="POST">
             <input class="textBox" type="text" name="text" placeholder="Write a "  />
+            <input class="fileInput" type="file" name="image" />
             <input type="submit" value="Send" />
         </form>
     </template>

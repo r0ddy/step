@@ -27,8 +27,8 @@ public final class CommentUtil {
      * Creates and stores a comment given a message.
      * @param text The comment's message.
      */
-    public static void addComment(String userNickname, String text){
-        Comment comment = new Comment(userNickname, text);
+    public static void addComment(String userNickname, String text, String imageUrl){
+        Comment comment = new Comment(userNickname, text, imageUrl);
         storeComment(comment);
     }
 
@@ -37,8 +37,8 @@ public final class CommentUtil {
      * @param text The response's message.
      * @param parentId The id of the parent response or comment.
      */
-    public static void addResponse(String userNickname, String text, long parentId){
-        Response response = new Response(userNickname, text, parentId);
+    public static void addResponse(String userNickname, String text, long parentId, String imageUrl){
+        Response response = new Response(userNickname, text, parentId, imageUrl);
         storeComment(response);
     }
 

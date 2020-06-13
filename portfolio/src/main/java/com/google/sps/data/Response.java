@@ -16,8 +16,8 @@ public final class Response extends Comment {
     /**
      * Constructor to use if input is from user.
      */
-    public Response(String userNickname, String text, Long parentId){
-        super(userNickname, text);
+    public Response(String userNickname, String text, Long parentId, String imageUrl){
+        super(userNickname, text, imageUrl);
         this.parentId = parentId;
     }
 
