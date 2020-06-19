@@ -1,13 +1,9 @@
 package com.google.sps.data;
 
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 import com.google.appengine.api.datastore.Entity;
 
 /** 
- * Represents a root response to a blog or post.
+ * Represents a comment on a blog or post.
  */
 public class Comment {
     
@@ -32,12 +28,32 @@ public class Comment {
     private String userNickname;
 
     /**
-     * Constructor to use when receiving input from user.
+     * The URL of the image associated with this comment.
      */
-    protected Comment(String userNickname, String text){
-        this.userNickname = userNickname;
+    private String imageUrl;
+    
+    /**
+     * The id of the comment that this 
+     * is a child of.
+     */
+    private Long parentId;
+    
+    /**
+     * Constructor used by CommentBuilder
+     * @param id
+     * @param text
+     * @param datePosted
+     * @param userNickname
+     * @param imageUrl
+     * @param parentId
+     */
+    protected Comment(Long id, String text, Long datePosted, String userNickname, String imageUrl, Long parentId){
+        this.id = id;
         this.text = text;
-        this.datePosted = System.currentTimeMillis();
+        this.datePosted = datePosted;
+        this.userNickname = userNickname;
+        this.imageUrl = imageUrl;
+        this.parentId = parentId;
     }
 
     /**
@@ -48,6 +64,8 @@ public class Comment {
         this.userNickname = (String) commentEntity.getProperty("userNickname");
         this.text = (String) commentEntity.getProperty("text");
         this.datePosted = (Long) commentEntity.getProperty("datePosted");
+        this.imageUrl = (String) commentEntity.getProperty("imageUrl");
+        this.parentId = (Long) commentEntity.getProperty("parentId");
     }
 
     /**
@@ -60,6 +78,8 @@ public class Comment {
         commentEntity.setProperty("userNickname", this.userNickname);
         commentEntity.setProperty("text", this.text);
         commentEntity.setProperty("datePosted", this.datePosted);
+        commentEntity.setProperty("imageUrl", this.imageUrl);
+        commentEntity.setProperty("parentId", this.parentId);
         return commentEntity;
     }
 }

@@ -17,14 +17,9 @@ public class UserServlet extends HttpServlet {
      */
     private static UserService userService;
 
-    /**
-     * Used to convert Java objects into JSON
-     */
-    private static Gson gson;
     @Override
     public void init() {
         userService = UserServiceFactory.getUserService();
-        gson = new Gson();
     }
 
     @Override
@@ -37,8 +32,7 @@ public class UserServlet extends HttpServlet {
         else{
             url = userService.createLoginURL("/experiments.html");
         }
-        UserResponse userResponse = new UserResponse(url, loggedIn);
-        String userResponseJSON = gson.toJson(userResponse);
+        String userResponseJSON = new UserResponse(url, loggedIn).getJson();
         response.setContentType("application/json;");
         response.getWriter().println(userResponseJSON);
     }
@@ -62,6 +56,11 @@ public class UserServlet extends HttpServlet {
         UserResponse(String url, boolean loggedIn){
             this.url = url;
             this.loggedIn = loggedIn;
+        }
+
+        public String getJson(){
+            Gson gson = new Gson();
+            return gson.toJson(this);
         }
     }
 }

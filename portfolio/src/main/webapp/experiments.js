@@ -1,35 +1,39 @@
 let commentsVisible = 0;
 
-async function getCommentsFromServer(){
+async function getCommentsResponseFromServer(){
     let params = {
         numComments: 5
     };
-    return getComments(params);
+    return getCommentsResponse(params);
 }
 
-async function getMoreCommentsFromServer(){
+async function getMoreCommentsResponseFromServer(){
     let additionalNumComments = document.querySelector("#numComments").value;
-    console.log(additionalNumComments);
     let params = {
         numComments: commentsVisible + additionalNumComments
     };
-    return getComments(params);
+    return getCommentsResponse(params);
 }
 
-async function getComments(params){
+async function getCommentsResponse(params){
     let request = await fetch("/comments?" + $.param(params));
-    let comments = await request.json();
-    return comments;
+    let commentsResponse = await request.json();
+    return commentsResponse;
 }
 
-function populateList(list){
+function populateList(params){
+    let list = params.comments;
+    let action = params.blobstoreUrl;
     commentsVisible = 0;
     list.forEach((item) => {
         // Create node for comment
         let itemNode = document.createElement("li");
         itemNode.id = "comment" + item.id;
         itemNode.innerText = item.text;
-        itemNode.onclick = () => createResponseForm(item.id);
+        itemNode.onclick = () => createResponseForm({
+            action: action,
+            id: item.id
+        });
 
         // Create node for responses to this comment
         let responsesNode = document.createElement("ul");
@@ -48,6 +52,14 @@ function populateList(list){
 
         // Add all corresponding comment elements to list
         let listNode = document.querySelector(listNodeSelector);
+
+        // Create node for image
+        if(item.hasOwnProperty("imageUrl")){
+            let imageNode = document.createElement("img");
+            imageNode.src = item.imageUrl;
+            imageNode.class = "commentImage";
+            listNode.appendChild(imageNode);
+        }
         listNode.appendChild(itemNode);
         listNode.appendChild(responsesNode);
         listNode.appendChild(responseFormholderNode);
@@ -56,27 +68,29 @@ function populateList(list){
 }
 
 async function loadComments(){
-    let comments = await getCommentsFromServer();
-    populateList(comments);
-    let commentForm = createCommentForm();
+    let commentsResponse = await getCommentsResponseFromServer();
+    populateList(commentsResponse);
+    let commentForm = createCommentForm(commentsResponse);
     document.querySelector(".textBlurb").appendChild(commentForm);
 }
 
-async function loadMoreComments(){
+async function loadMoreComments(params){
     document.querySelector("#responses").innerHTML = "";
-    let comments = await getMoreCommentsFromServer();
-    populateList(comments);
+    let commentsResponse = await getMoreCommentsResponseFromServer();
+    populateList(commentsResponse);
 }
 
-function createCommentForm(){
+function createCommentForm(params){
     let commentFormTemplate = document.querySelector("#postFormTemplate");
     let clone = document.importNode(commentFormTemplate.content, true);
     clone.querySelector("form").id = "commentForm";
+    clone.querySelector("form").action = params.blobstoreUrl;
     clone.querySelector(".textBox").placeholder += "comment";
     return clone;
 }
 
-function createResponseForm(id){
+function createResponseForm(params){
+    let id = params.id;
     // Remove responseForm if it exists
     let existingResponseForm = document.querySelector("#responseForm");
     if(existingResponseForm){
@@ -87,6 +101,7 @@ function createResponseForm(id){
     let commentFormTemplate = document.querySelector("#postFormTemplate");
     let clone = document.importNode(commentFormTemplate.content, true);
     clone.querySelector("form").id = "responseForm";
+    clone.querySelector("form").action = params.action;
     clone.querySelector(".textBox").placeholder += "response";
 
     // Create hidden parentId input
