@@ -9,7 +9,6 @@ async function getCommentsResponseFromServer(){
 
 async function getMoreCommentsResponseFromServer(){
     let additionalNumComments = document.querySelector("#numComments").value;
-    console.log(additionalNumComments);
     let params = {
         numComments: commentsVisible + additionalNumComments
     };
@@ -102,7 +101,7 @@ function createResponseForm(params){
     let commentFormTemplate = document.querySelector("#postFormTemplate");
     let clone = document.importNode(commentFormTemplate.content, true);
     clone.querySelector("form").id = "responseForm";
-    clone.querySelector("form").action = params.blobstoreUrl;
+    clone.querySelector("form").action = params.action;
     clone.querySelector(".textBox").placeholder += "response";
 
     // Create hidden parentId input

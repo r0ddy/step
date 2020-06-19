@@ -39,6 +39,7 @@ import com.google.appengine.api.images.ServingUrlOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
+import com.google.sps.data.CommentBuilder;
 
 /** Servlet that returns some example content. TODO: modify this file to handle comments data */
 @WebServlet("/comments")
@@ -99,17 +100,19 @@ public class CommentServlet extends HttpServlet {
             String parentIdValue = request.getParameter("parentId");
             String textValue = request.getParameter("text");
             String imageUrl = getUploadedFileUrl(request, "image");
-            if(parentIdValue == null){
-                CommentUtil.addComment(userNickname, textValue, imageUrl);
-            }
-            else{
+            CommentBuilder commentBuilder = new CommentBuilder(userNickname, textValue);
+            commentBuilder.setImageUrl(imageUrl);
+            if(parentIdValue != null){
                 try{
                     Long parentId = Long.parseLong(parentIdValue);
-                    CommentUtil.addResponse(userNickname, textValue, parentId, imageUrl);
+                    commentBuilder.setParentId(parentId);
                 } catch(NumberFormatException e) {
                     logger.log(Level.WARNING, "Cannot parse parentId", e);
                 }
             }
+            Comment comment = commentBuilder.build();
+            CommentUtil.storeComment(comment);
+            logger.log(Level.INFO, "Comment stored");
         }
         response.sendRedirect("/experiments.html");
     }

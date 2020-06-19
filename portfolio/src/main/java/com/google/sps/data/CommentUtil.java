@@ -18,29 +18,10 @@ import java.util.ConcurrentModificationException;
 
 /**
  * Represents a utility for creating, storing,
- * and retrieving Comment and Response objects.
+ * and retrieving Comment objects.
  */
 public final class CommentUtil {
     private static Logger logger = Logger.getLogger("com.google.sps.commentutil");
-
-    /**
-     * Creates and stores a comment given a message.
-     * @param text The comment's message.
-     */
-    public static void addComment(String userNickname, String text, String imageUrl){
-        Comment comment = new Comment(userNickname, text, imageUrl);
-        storeComment(comment);
-    }
-
-    /**
-     * Creates and stores a response given a message and parent id.
-     * @param text The response's message.
-     * @param parentId The id of the parent response or comment.
-     */
-    public static void addResponse(String userNickname, String text, long parentId, String imageUrl){
-        Response response = new Response(userNickname, text, parentId, imageUrl);
-        storeComment(response);
-    }
 
     /**
      * Retrieves all comments from the Datastore.
@@ -59,7 +40,7 @@ public final class CommentUtil {
         }
         List<Comment> comments = new ArrayList<>();
         for (Entity entity : commentEntities) {
-            Comment comment = convertEntityToComment(entity);
+            Comment comment = new Comment(entity);
             comments.add(comment);
         }
         return comments;
@@ -99,22 +80,10 @@ public final class CommentUtil {
     }
 
     /**
-     * Converts an Entity into a Comment or Response object.
-     * Used to transform Entity object retrieved from Datastore.
-     * @param entity Entity to transform.
-     * @return The resulting Entity or Comment.
-     */
-    private static Comment convertEntityToComment(Entity entity){
-        Long parentId = (Long) entity.getProperty("parentId");
-        Comment comment = parentId == null ? new Comment(entity) : new Response(entity);
-        return comment;
-    }
-
-    /**
      * Helper function for storing a Comment in Datastore.
      * @param comment Comment object to transform into entity and store.
      */
-    private static void storeComment(Comment comment){
+    public static void storeComment(Comment comment){
         Entity commentEntity = comment.getEntity();
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         datastore.put(commentEntity);
